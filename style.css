@@ -1,0 +1,66 @@
+body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      background: linear-gradient(135deg, #ff9ff3, #d980fa, #f368e0);
+      color: white;
+      text-align: center;
+      overflow-x: hidden;
+    }
+    .start-screen {
+      padding-top: 20vh;
+      transition: opacity 1s ease;
+    }
+    .hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+    button {
+      margin-top: 20px;
+      padding: 15px 30px;
+      border: none;
+      border-radius: 20px;
+      font-size: 20px;
+      cursor: pointer;
+      background: #ff6b81;
+      color: white;
+      transition: transform 0.3s ease, background 0.3s ease;
+    }
+    button:hover {
+      transform: scale(1.1);
+      background: #ff4757;
+    }
+    .gallery {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 15px;
+      margin-top: 30px;
+      opacity: 0;
+      transition: opacity 1s ease;
+    }
+    .gallery img {
+      width: 200px;
+      height: auto;
+      border-radius: 20px;
+      box-shadow: 0 0 20px rgba(255,255,255,0.6);
+      opacity: 0;
+      transform: scale(0) rotate(0deg);
+      transition: transform 1s ease, opacity 1s ease;
+    }
+    .congrats {
+      max-width: 800px;
+      margin: 30px auto;
+      font-size: 22px;
+      line-height: 1.5;
+      opacity: 0;
+      transition: opacity 1.5s ease;
+    }
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <title>С Днём Рождения, Злата!</title>
+  <link rel="stylesheet" href="/happy_birthday_ZLATA/assets/CSS/style.css">
+</head>
+<body>
+  <div class="start-screen" id="startScreen">
+    <h1>Злата, ну вот тебе и исполнилось 17 лет! Сегодня твой день, поэтому проведи его на все 101%!!! Ну и как же без поздравления!)))</h1>
+    <button id="startBtn">ЖМИ СКОРЕЕ!!!!</button>
+  </div>
+
+  <div class="gallery" id="gallery">
+    <img src="/happy_birthday_ZLATA/assets/img/Злата1.jpg">
+    <img src="/happy_birthday_ZLATA/assets/img/Злата2.jpg">
+    <img src="/happy_birthday_ZLATA/assets/img/Злата3.jpg">
+    <img src="/happy_birthday_ZLATA/assets/img/Злата4.jpg">
+    <img src="/happy_birthday_ZLATA/assets/img/Злата5.jpg">
+  </div>
+
+  <div class="congrats" id="congrats">
+    Злата, я от всей души поздравляю тебя с твоим Днем Рождения! Я очень рад, что все наши недопонимая ушли и мы снова дружим! Я ценю нашу дружбу и надеюсь, что наша дружба не закончится и она продолжится до нашей старости. 17 лет, этот возраст - настоящая магия, когда все мечты сбываются, а жизнь наполняется новыми красками! Пусть этот год принесет тебе много положительных эмоций, море улыбок и незабываемых моментов! Оставайся такой же прекрасной и замечательной! Еще раз с Днём Рождения!!!!!!!!
+    <br><br>
+    <button id="fireworkBtn">Салютик)</button>
+  </div>
+
+  <canvas id="fireworks"></canvas>
+
+  <script>
+    const startBtn = document.getElementById('startBtn');
+    const startScreen = document.getElementById('startScreen');
+    const gallery = document.getElementById('gallery');
+    const congrats = document.getElementById('congrats');
+    const fireworkBtn = document.getElementById('fireworkBtn');
+    const canvas = document.getElementById('fireworks');
+    const ctx = canvas.getContext('2d');
+    let fireworks = [];
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+
+    // Появление фотографий и поздравления
+    startBtn.addEventListener('click', () => {
+      startScreen.classList.add('hidden');
+      setTimeout(() => {
+        gallery.style.opacity = 1;
+        [...gallery.getElementsByTagName('img')].forEach((img, i) => {
+          setTimeout(() => {
+            img.style.opacity = 1;
+            img.style.transform = `scale(1) rotate(${Math.random()*60-30}deg)`;
+          }, i * 400);
+        });
+        setTimeout(() => {
+          congrats.style.opacity = 1;
+        }, 2500);
+      }, 1000);
+    });
+
+    // Фейерверки
+    class Firework {
+      constructor(x, y, text=null) {
+        this.x = x;
+        this.y = y;
+        this.text = text;
+        this.particles = [];
+        const colors = ['#ff4757','#ff6b81','#ffa502','#70a1ff','#7bed9f','#eccc68'];
+        if (text) {
+          ctx.font = "bold 80px Comic Sans MS";
+          const metrics = ctx.measureText(text);
+          const width = metrics.width;
+          for (let i=0; i<text.length*50; i++) {
+            const px = this.x - width/2 + Math.random()*width;
+            const py = this.y + (Math.random()*80 - 40);
+            this.particles.push(new Particle(px, py, colors[Math.floor(Math.random()*colors.length)]));
+          }
+        } else {
+          for (let i=0; i<100; i++) {
+            this.particles.push(new Particle(this.x, this.y, colors[Math.floor(Math.random()*colors.length)]));
+          }
+        }
+      }
+      update() {
+        this.particles.forEach(p => p.update());
+      }
+      draw() {
+        this.particles.forEach(p => p.draw());
+      }
+    }
+
+    class Particle {
+      constructor(x, y, color) {
+        this.x = x;
+        this.y = y;
+        this.color = color;
+        this.radius = 2;
+        this.vx = (Math.random()-0.5)*6;
+        this.vy = (Math.random()-0.5)*6;
+        this.alpha = 1;
+      }
+      update() {
+        this.x += this.vx;
+        this.y += this.vy;
+        this.vy += 0.05;
+        this.alpha -= 0.01;
+      }
+      draw() {
+        ctx.globalAlpha = this.alpha;
+        ctx.fillStyle = this.color;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI*2);
+        ctx.fill();
+        ctx.globalAlpha = 1;
+      }
+    }
+
+    function animate() {
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+      fireworks.forEach((fw, i) => {
+        fw.update();
+        fw.draw();
+      });
+      requestAnimationFrame(animate);
+    }
+    animate();
+
+    fireworkBtn.addEventListener('click', () => {
+      fireworks.push(new Firework(canvas.width/2, canvas.height/2, "17"));
+      setTimeout(()=>{
+        fireworks.push(new Firework(canvas.width/2, canvas.height/2, "УРА!!!"));
+      },2000);
+      setInterval(()=>{
+        fireworks.push(new Firework(Math.random()*canvas.width, Math.random()*canvas.height/2));
+      },1500);
+    });
+  </script>
+</body>
+</html>
